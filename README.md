@@ -1,6 +1,6 @@
 # Commons-Compass
 
-Overview:
+*Overview:
   - Commons Compass is a web application designed to help users track their nutritional intake      based on menu selections from various dining stations. Users can select food items from         different categories, and the app will dynamically calculate the total calories, protein,       carbohydrates, fat, and sugar consumed.
 
 Features:
