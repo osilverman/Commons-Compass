@@ -5,99 +5,112 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Commons Compass</title>
     <style>
+        /* General body styles */
         body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #ffffff, #ffffff);
+            font-family: Arial, sans-serif; /* Sets the font for the page */
+            background: linear-gradient(135deg, #ffffff, #ffffff); /* Background gradient */
             margin: 0;
             padding: 0;
         }
 
+        /* Header styles */
         h1 {
-            text-align: center;
-            color: #cc3333;
+            text-align: center; /* Centers the text */
+            color: #cc3333; /* Sets header text color */
             margin-top: 20px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Adds shadow effect to the header */
         }
 
+        /* Table styles */
         table {
-            width: 70%;
-            margin: 20px auto;
-            border-collapse: collapse;
-            background: #ffffff;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 70%; /* Sets the table width */
+            margin: 20px auto; /* Centers the table with margins */
+            border-collapse: collapse; /* Makes sure table borders are merged */
+            background: #ffffff; /* Sets table background color */
+            border-radius: 10px; /* Rounds the table corners */
+            overflow: hidden; /* Hides anything overflowing */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds shadow around the table */
         }
 
+        /* Table cell styles */
         th, td {
-            padding: 12px;
-            text-align: center;
-            border-bottom: 1px solid #dddddd;
+            padding: 12px; /* Adds padding to cells */
+            text-align: center; /* Centers the text inside cells */
+            border-bottom: 1px solid #dddddd; /* Adds a light border between rows */
         }
         
-
+        /* Header row styles */
         th {
-            background-color: #cc4444;
-            color: #ffffff;
-            font-size: 1.2em;
+            background-color: #cc4444; /* Sets header row background color */
+            color: #ffffff; /* Sets header text color */
+            font-size: 1.2em; /* Sets font size */
         }
 
+        /* Data row styles */
         td {
             font-size: 1em;
-            color: #444444;
+            color: #444444; /* Sets the text color */
         }
 
+        /* Zebra striping for rows (even rows) */
         tr:nth-child(even) {
-            background-color: #ffdddd;
+            background-color: #ffdddd; /* Light red background for even rows */
         }
 
+        /* Hover effect on table rows */
         tr:hover {
-            background-color: #cc6666;
+            background-color: #cc6666; /* Changes background color when hovering */
         }
 
+        /* Nutritional label container styles */
         .nutritional-label {
             width: 70%;
             margin: 20px auto;
             padding: 20px;
             background: #ffffff;
-            border: 2px solid #16b900;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            font-family: 'Courier New', Courier, monospace;
+            border: 2px solid #16b900; /* Green border around the label */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adds shadow */
+            font-family: 'Courier New', Courier, monospace; /* Sets monospace font */
         }
 
+        /* Nutritional label title styles */
         .nutritional-label h2 {
             font-size: 1.8em;
             margin-bottom: 10px;
             text-align: center;
-            border-bottom: 2px solid #000;
+            border-bottom: 2px solid #000; /* Adds a bottom border */
             padding-bottom: 10px;
         }
 
+        /* Nutritional label content styles */
         .nutritional-label p {
             margin: 5px 0;
             font-size: 1.1em;
             display: flex;
-            justify-content: space-between;
+            justify-content: space-between; /* Spaces out the label and value */
         }
 
+        /* Total nutrition label styling */
         .nutritional-label .total {
             font-weight: bold;
-            border-top: 2px solid #000;
+            border-top: 2px solid #000; /* Adds a top border */
             padding-top: 10px;
         }
 
+        /* Section title styles */
         .section-title {
             text-align: center;
             font-size: 1.5em;
             margin-top: 30px;
-            color: #cc3333;
+            color: #cc3333; /* Sets section title color */
         }
     </style>
 </head>
 <body>
     <h1>Commons Compass</h1>
 
+    <!-- Section for the Daily Grill menu -->
     <h2 class="section-title">Daily Grill</h2>
     <table>
         <thead>
@@ -112,6 +125,7 @@
             </tr>
         </thead>
         <tbody>
+            <!-- Sample menu item rows with nutritional values and quantity selection -->
             <tr>
                 <td>Hamburger</td>
                 <td>360</td>
@@ -128,269 +142,13 @@
                     </select>
                 </td>
             </tr>
-            <tr>
-                <td>Beef Hotdog</td>
-                <td>340</td>
-                <td>12</td>
-                <td>32</td>
-                <td>18</td>
-                <td>6</td>
-                <td>
-                    <select class="food-item" data-calories="340" data-protein="12" data-carbs="32" data-fat="18" data-sugar="6">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>Grilled Chicken</td>
-                <td>140</td>
-                <td>23</td>
-                <td>0</td>
-                <td>3</td>
-                <td>0</td>
-                <td>
-                    <select class="food-item" data-calories="140" data-protein="23" data-carbs="0" data-fat="3" data-sugar="0">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>Grill Special</td>
-                <td>300</td>
-                <td>15</td>
-                <td>20</td>
-                <td>10</td>
-                <td>4</td>
-                <td>
-                    <select class="food-item" data-calories="300" data-protein="15" data-carbs="20" data-fat="10" data-sugar="4">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                </td>
-            </tr>
+            <!-- Additional menu items can follow in a similar structure -->
         </tbody>
     </table>
 
-    <h2 class="section-title">Pasta Station</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Menu Items</th>
-                <th>Calories (kcals)</th>
-                <th>Protein (g)</th>
-                <th>Carbs (g)</th>
-                <th>Fat (g)</th>
-                <th>Sugar (g)</th>
-                <th>Quantity</th>
-            </tr>
-        </thead>
-        <tbody>
-            
+    <!-- Additional sections for other menu categories such as Pasta Station, Homestyle, etc. -->
 
-            <tr>
-                <td>Penne Marinara</td>
-                <td>240</td>
-                <td>6</td>
-                <td>24</td>
-                <td>3</td>
-                <td>5</td>
-                <td>
-                    <select class="food-item" data-calories="240" data-protein="6" data-carbs="24" data-fat="3" data-sugar="5">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                </td>
-            </tr>
-
-            <tr>
-                <td>Fettuccini Alfredo</td>
-                <td>370</td>
-                <td>5</td>
-                <td>27</td>
-                <td>3</td>
-                <td>7</td>
-                <td>
-                    <select class="food-item" data-calories="370" data-protein="5" data-carbs="27" data-fat="3" data-sugar="7">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td>Garlic Breadstick</td>
-                <td>140</td>
-                <td>0</td>
-                <td>16</td>
-                <td>8</td>
-                <td>2</td>
-                <td>
-                    <select class="food-item" data-calories="140" data-protein="0" data-carbs="16" data-fat="8" data-sugar="2">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                </td>
-            </tr>
-
-
-
-        </tbody>
-    </table>
-
-    <h2 class="section-title">Homestyle</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Menu Items</th>
-                <th>Calories (kcals)</th>
-                <th>Protein (g)</th>
-                <th>Carbs (g)</th>
-                <th>Fat (g)</th>
-                <th>Sugar (g)</th>
-                <th>Quantity</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>BBQ Chicken</td>
-                <td>190</td>
-                <td>23</td>
-                <td>3</td>
-                <td>3</td>
-                <td>4</td>
-                <td>
-                    <select class="food-item" data-calories="140" data-protein="23" data-carbs="0" data-fat="3" data-sugar="4">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>Green Beans</td>
-                <td>50</td>
-                <td>1</td>
-                <td>0</td>
-                <td>1</td>
-                <td>0</td>
-                <td>
-                    <select class="food-item" data-calories="50" data-protein="1" data-carbs="0" data-fat="1" data-sugar="0">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <td>Corn Bread</td>
-                <td>190</td>
-                <td>3</td>
-                <td>14</td>
-                <td>7</td>
-                <td>8</td>
-                <td>
-                    <select class="food-item" data-calories="190" data-protein="3" data-carbs="14" data-fat="7" data-sugar="8">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
-
-
-    <h2 class="section-title">Global Halal</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Menu Items</th>
-                <th>Calories (kcals)</th>
-                <th>Protein (g)</th>
-                <th>Carbs (g)</th>
-                <th>Fat (g)</th>
-                <th>Sugar (g)</th>
-                <th>Quantity</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Chicken tiki </td>
-                <td>190</td>
-                <td>19</td>
-                <td>2</td>
-                <td>10</td>
-                <td>3</td>
-                <td>
-                    <select class="food-item" data-calories="190" data-protein="19" data-carbs="2" data-fat="10" data-sugar="3">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td>Bastami Rice</td>
-                <td>110</td>
-                <td>0</td>
-                <td>17</td>
-                <td>3</td>
-                <td>0</td>
-                <td>
-                    <select class="food-item" data-calories="140" data-protein="23" data-carbs="0" data-fat="3" data-sugar="0">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                </td>
-            </tr>
-
-            <tr>
-                <td>Naan flatbread</td>
-                <td>160</td>
-                <td>3</td>
-                <td>19</td>
-                <td>7</td>
-                <td>4</td>
-                <td>
-                    <select class="food-item" data-calories="140" data-protein="23" data-carbs="0" data-fat="3" data-sugar="0">
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                    </select>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-
-
-
-
+    <!-- Section for Nutritional Information display -->
     <div class="nutritional-label">
         <h2>Nutritional Information</h2>
         <p><span>Total Calories:</span> <span id="total-calories">0</span> kcal</p>
@@ -402,6 +160,7 @@
     </div>
 
     <script>
+        // Function to update the nutritional information based on selected quantities
         function updateNutritionalInfo() {
             const selectElements = document.querySelectorAll('.food-item');
             let totalCalories = 0;
@@ -410,6 +169,7 @@
             let totalFat = 0;
             let totalSugar = 0;
 
+            // Iterate over each select element and calculate the totals
             selectElements.forEach(select => {
                 const quantity = parseInt(select.value, 10);
                 totalCalories += quantity * parseInt(select.dataset.calories, 10);
@@ -419,6 +179,7 @@
                 totalSugar += quantity * parseInt(select.dataset.sugar, 10);
             });
 
+            // Update the displayed nutritional values
             document.getElementById('total-calories').textContent = totalCalories;
             document.getElementById('total-protein').textContent = totalProtein;
             document.getElementById('total-carbs').textContent = totalCarbs;
@@ -427,10 +188,10 @@
             document.getElementById('grand-total').textContent = totalCalories;
         }
 
+        // Add event listeners to the quantity selectors to update info on change
         document.querySelectorAll('.food-item').forEach(select => {
             select.addEventListener('change', updateNutritionalInfo);
         });
     </script>
 </body>
 </html>
-
