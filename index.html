@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Commons Compass – IIT Dining Tracker</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500&display=swap');
+
+  :root {
+    --red:      #cc3333;
+    --red-dark: #a02020;
+    --red-light:#fdecea;
+    --red-mid:  #e87070;
+    --grey-bg:  #f5f5f7;
+    --grey-line:#e0e0e0;
+    --text:     #1a1a1a;
+    --muted:    #666;
+    --white:    #ffffff;
+    --green:    #2e7d32;
+    --yellow:   #f59e0b;
+    --orange:   #d97706;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--grey-bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--red);
+    color: var(--white);
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+  }
+  header .logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  header .logo span { opacity: 0.65; font-weight: 400; font-size: 1rem; margin-left: 8px; }
+  header .cal-pill {
+    background: rgba(255,255,255,0.2);
+    border-radius: 999px;
+    padding: 6px 18px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s;
+  }
+  header .cal-pill:hover { background: rgba(255,255,255,0.32); }
+
+  /* ── LAYOUT ── */
+  .layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 24px;
+    max-width: 1200px;
+    margin: 28px auto;
+    padding: 0 20px 60px;
+  }
+
+  /* ── STATION TABS ── */
+  .tab-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .tab-btn {
+    background: var(--white);
+    border: 1.5px solid var(--grey-line);
+    border-radius: 999px;
+    padding: 7px 18px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .18s;
+    color: var(--muted);
+  }
+  .tab-btn:hover { border-color: var(--red); color: var(--red); }
+  .tab-btn.active { background: var(--red); border-color: var(--red); color: var(--white); }
+
+  /* ── STATION PANEL ── */
+  .station { display: none; }
+  .station.active { display: block; }
+
+  .station-header {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--red-dark);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--red-light);
+  }
+
+  /* ── FOOD CARDS ── */
+  .food-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .food-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 14px 18px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    transition: box-shadow .15s;
+  }
+  .food-card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.12); }
+  .food-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+  .food-macros {
+    font-size: 0.78rem;
+    color: var(--muted);
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .food-macros span { white-space: nowrap; }
+  .macro-cal { color: var(--red); font-weight: 600; }
+  .macro-pro { color: var(--green); font-weight: 600; }
+  .macro-carb { color: var(--yellow); font-weight: 600; }
+  .macro-fat { color: var(--orange); font-weight: 600; }
+
+  .qty-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .qty-btn {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    border: 1.5px solid var(--grey-line);
+    background: var(--grey-bg);
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .15s;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+  }
+  .qty-btn:hover { background: var(--red); border-color: var(--red); color: var(--white); }
+  .qty-display {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    min-width: 18px;
+    text-align: center;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar { position: sticky; top: 80px; align-self: start; }
+
+  /* Goals Card */
+  .goals-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    margin-bottom: 16px;
+  }
+  .goals-card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+  .goal-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-size: 0.85rem;
+  }
+  .goal-row label { color: var(--muted); font-weight: 500; }
+  .goal-input {
+    width: 75px;
+    border: 1.5px solid var(--grey-line);
+    border-radius: 8px;
+    padding: 5px 8px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-align: right;
+    color: var(--text);
+    transition: border .15s;
+  }
+  .goal-input:focus { outline: none; border-color: var(--red); }
+
+  /* Tracker Card */
+  .tracker-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+    margin-bottom: 16px;
+  }
+  .tracker-card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 16px;
+  }
+
+  /* Calorie ring */
+  .cal-ring-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 18px;
+  }
+  .ring-container { position: relative; width: 130px; height: 130px; }
+  .ring-container svg { transform: rotate(-90deg); }
+  .ring-bg { fill: none; stroke: var(--red-light); stroke-width: 10; }
+  .ring-fill { fill: none; stroke: var(--red); stroke-width: 10; stroke-linecap: round;
+    stroke-dasharray: 345; stroke-dashoffset: 345; transition: stroke-dashoffset .4s ease; }
+  .ring-center {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    text-align: center;
+  }
+  .ring-cal {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--red);
+    line-height: 1;
+  }
+  .ring-label { font-size: 0.68rem; color: var(--muted); margin-top: 2px; }
+  .ring-sub { font-size: 0.8rem; color: var(--muted); margin-top: 6px; }
+
+  /* Macro bars */
+  .macro-bar-row { margin-bottom: 12px; }
+  .macro-bar-row .bar-label {
+    display: flex; justify-content: space-between;
+    font-size: 0.8rem; margin-bottom: 5px;
+    font-weight: 500;
+  }
+  .bar-track {
+    height: 8px; background: var(--grey-line); border-radius: 999px; overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%; border-radius: 999px; transition: width .35s ease;
+    width: 0%;
+  }
+  .bar-pro  { background: var(--green); }
+  .bar-carb { background: var(--yellow); }
+  .bar-fat  { background: var(--orange); }
+
+  /* Log Card */
+  .log-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .log-card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 14px;
+  }
+  .log-empty { font-size: 0.82rem; color: var(--muted); text-align: center; padding: 12px 0; }
+  .log-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--grey-line);
+    font-size: 0.82rem;
+  }
+  .log-item:last-child { border-bottom: none; }
+  .log-item-name { font-weight: 500; }
+  .log-item-cal { color: var(--red); font-weight: 600; font-family: 'Space Grotesk', sans-serif; }
+  .log-clear {
+    margin-top: 12px; width: 100%;
+    background: none; border: 1.5px solid var(--grey-line);
+    border-radius: 8px; padding: 8px;
+    font-size: 0.82rem; color: var(--muted);
+    cursor: pointer; transition: all .15s;
+    font-family: 'Inter', sans-serif;
+  }
+  .log-clear:hover { border-color: var(--red); color: var(--red); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Commons Compass <span>IIT Dining</span></div>
+  <div class="cal-pill" id="header-cal">0 kcal tracked</div>
+</header>
+
+<!-- Menu date / status banner -->
+<div id="menu-status" style="
+  display:none;
+  text-align:center;
+  padding:10px 20px;
+  font-size:0.85rem;
+  font-weight:500;
+  background:#fff3e0;
+  color:#e65100;
+  border-bottom:1px solid rgba(0,0,0,0.07);
+"></div>
+
+<div class="layout">
+
+  <!-- LEFT: STATIONS -->
+  <div class="main-col">
+    <div class="tab-bar" id="tab-bar"></div>
+    <div id="stations-container"></div>
+  </div>
+
+  <!-- RIGHT: SIDEBAR -->
+  <aside class="sidebar">
+
+    <!-- Goals -->
+    <div class="goals-card">
+      <h3>Daily Goals</h3>
+      <div class="goal-row"><label>Calories (kcal)</label><input class="goal-input" id="g-cal" type="number" value="2200" min="0" /></div>
+      <div class="goal-row"><label>Protein (g)</label><input class="goal-input" id="g-pro" type="number" value="160" min="0" /></div>
+      <div class="goal-row"><label>Carbs (g)</label><input class="goal-input" id="g-carb" type="number" value="250" min="0" /></div>
+      <div class="goal-row"><label>Fat (g)</label><input class="goal-input" id="g-fat" type="number" value="70" min="0" /></div>
+    </div>
+
+    <!-- Tracker -->
+    <div class="tracker-card">
+      <h3>Today's Nutrition</h3>
+      <div class="cal-ring-wrap">
+        <div class="ring-container">
+          <svg width="130" height="130" viewBox="0 0 130 130">
+            <circle class="ring-bg" cx="65" cy="65" r="55"/>
+            <circle class="ring-fill" id="cal-ring" cx="65" cy="65" r="55"/>
+          </svg>
+          <div class="ring-center">
+            <div class="ring-cal" id="t-cal">0</div>
+            <div class="ring-label">kcal</div>
+          </div>
+        </div>
+        <div class="ring-sub" id="ring-sub">0 of 2200 kcal</div>
+      </div>
+
+      <div class="macro-bar-row">
+        <div class="bar-label">
+          <span style="color:var(--green);font-weight:600">Protein</span>
+          <span id="t-pro-label">0 / 160g</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill bar-pro" id="bar-pro"></div></div>
+      </div>
+      <div class="macro-bar-row">
+        <div class="bar-label">
+          <span style="color:var(--yellow);font-weight:600">Carbs</span>
+          <span id="t-carb-label">0 / 250g</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill bar-carb" id="bar-carb"></div></div>
+      </div>
+      <div class="macro-bar-row">
+        <div class="bar-label">
+          <span style="color:var(--orange);font-weight:600">Fat</span>
+          <span id="t-fat-label">0 / 70g</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill bar-fat" id="bar-fat"></div></div>
+      </div>
+    </div>
+
+    <!-- Meal Log -->
+    <div class="log-card">
+      <h3>Meal Log</h3>
+      <div id="log-list"><p class="log-empty">Nothing added yet.</p></div>
+      <button class="log-clear" id="clear-btn">Clear all</button>
+    </div>
+
+  </aside>
+</div>
+
+<script>
+// ── DATA — loaded from menu.json (written daily by GitHub Actions) ──────────
+let stations = [];
+
+async function loadMenu() {
+  const statusEl = document.getElementById('menu-status');
+  try {
+    const res = await fetch('menu.json?v=' + Date.now()); // bust cache
+    if (!res.ok) throw new Error('menu.json not found');
+    const data = await res.json();
+
+    if (!data.fetched || !data.stations.length) {
+      statusEl.textContent = '⚠️ Dining hall is closed today — showing sample menu.';
+      statusEl.style.display = 'block';
+      loadFallbackData();
+    } else {
+      // Add slugified id to each station
+      stations = data.stations.map(s => ({
+        ...s,
+        id: s.name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      }));
+      const d = new Date(data.date + 'T12:00:00'); // avoid tz shift
+      const label = d.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
+      statusEl.textContent = `📅 Menu for ${label} — ${data.period}`;
+      statusEl.style.background = '#e8f5e9';
+      statusEl.style.color = '#2e7d32';
+      statusEl.style.display = 'block';
+    }
+  } catch (e) {
+    statusEl.textContent = '⚠️ Could not load today\'s menu — showing sample data.';
+    statusEl.style.display = 'block';
+    loadFallbackData();
+  }
+  buildUI();
+}
+
+function loadFallbackData() {
+  stations = [
+    { id:"grill", name:"Daily Grill", items:[
+      { name:"Hamburger", cal:360, pro:21, carb:28, fat:15, sugar:5 },
+      { name:"Cheeseburger", cal:420, pro:25, carb:29, fat:19, sugar:5 },
+      { name:"Grilled Chicken Sandwich", cal:380, pro:34, carb:32, fat:10, sugar:4 },
+      { name:"French Fries", cal:340, pro:4, carb:44, fat:16, sugar:0 },
+      { name:"Grilled Chicken Wrap", cal:420, pro:36, carb:34, fat:14, sugar:3 },
+    ]},
+    { id:"pasta", name:"Pasta Station", items:[
+      { name:"Penne Marinara", cal:380, pro:12, carb:68, fat:6, sugar:8 },
+      { name:"Penne Alfredo", cal:480, pro:14, carb:62, fat:18, sugar:3 },
+      { name:"Spaghetti Bolognese", cal:520, pro:28, carb:58, fat:16, sugar:7 },
+      { name:"Mac & Cheese", cal:430, pro:16, carb:54, fat:17, sugar:4 },
+    ]},
+    { id:"homestyle", name:"Homestyle", items:[
+      { name:"Roast Chicken", cal:290, pro:38, carb:0, fat:14, sugar:0 },
+      { name:"Mashed Potatoes", cal:210, pro:4, carb:32, fat:8, sugar:2 },
+      { name:"Green Beans", cal:45, pro:2, carb:8, fat:1, sugar:3 },
+      { name:"Vegetable Soup", cal:120, pro:5, carb:18, fat:3, sugar:5 },
+    ]},
+    { id:"salad", name:"Salad Bar", items:[
+      { name:"Mixed Greens (2 cups)", cal:20, pro:2, carb:3, fat:0, sugar:1 },
+      { name:"Grilled Chicken (3oz)", cal:130, pro:26, carb:0, fat:3, sugar:0 },
+      { name:"Ranch Dressing (2T)", cal:140, pro:1, carb:2, fat:14, sugar:1 },
+      { name:"Hard Boiled Egg", cal:70, pro:6, carb:1, fat:5, sugar:0 },
+    ]},
+    { id:"global", name:"Global Flavors", items:[
+      { name:"Chicken Tikka Masala", cal:380, pro:30, carb:20, fat:18, sugar:6 },
+      { name:"Basmati Rice (1 cup)", cal:210, pro:4, carb:44, fat:1, sugar:0 },
+      { name:"Naan", cal:260, pro:8, carb:45, fat:5, sugar:3 },
+      { name:"Vegetable Curry", cal:220, pro:8, carb:30, fat:8, sugar:6 },
+    ]},
+  ];
+}
+
+// ── STATE ─────────────────────────────────────────────────
+const quantities = {}; // "stationId-itemIndex" → count
+
+// ── BUILD UI (called after stations array is populated) ───
+function buildUI() {
+  const tabBar   = document.getElementById('tab-bar');
+  const container = document.getElementById('stations-container');
+  tabBar.innerHTML = '';
+  container.innerHTML = '';
+
+  stations.forEach((station, si) => {
+    // Tab button
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (si === 0 ? ' active' : '');
+    btn.textContent = station.name;
+    btn.dataset.station = station.id;
+    btn.addEventListener('click', () => switchTab(station.id));
+    tabBar.appendChild(btn);
+
+    // Station panel
+    const panel = document.createElement('div');
+    panel.className = 'station' + (si === 0 ? ' active' : '');
+    panel.id = 'station-' + station.id;
+    panel.innerHTML = `<div class="station-header">${station.name}</div><div class="food-grid"></div>`;
+    const grid = panel.querySelector('.food-grid');
+
+    station.items.forEach((item, ii) => {
+      const key = `${station.id}-${ii}`;
+      quantities[key] = 0;
+      const card = document.createElement('div');
+      card.className = 'food-card';
+      card.innerHTML = `
+        <div>
+          <div class="food-name">${item.name}</div>
+          <div class="food-macros">
+            <span class="macro-cal">⚡ ${item.cal} kcal</span>
+            <span class="macro-pro">P ${item.pro}g</span>
+            <span class="macro-carb">C ${item.carb}g</span>
+            <span class="macro-fat">F ${item.fat}g</span>
+          </div>
+        </div>
+        <div class="qty-control">
+          <button class="qty-btn" data-key="${key}" data-action="dec">−</button>
+          <span class="qty-display" id="qty-${key}">0</span>
+          <button class="qty-btn" data-key="${key}" data-action="inc">+</button>
+        </div>`;
+      grid.appendChild(card);
+    });
+
+    container.appendChild(panel);
+  });
+
+  recalc();
+}
+
+// Tab switch
+function switchTab(id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.station === id));
+  document.querySelectorAll('.station').forEach(p => p.classList.toggle('active', p.id === 'station-' + id));
+}
+
+// Qty buttons
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.qty-btn');
+  if (!btn) return;
+  const key = btn.dataset.key;
+  const action = btn.dataset.action;
+  if (action === 'inc') quantities[key] = Math.min((quantities[key] || 0) + 1, 5);
+  if (action === 'dec') quantities[key] = Math.max((quantities[key] || 0) - 1, 0);
+  document.getElementById('qty-' + key).textContent = quantities[key];
+  recalc();
+});
+
+// Goal inputs
+document.querySelectorAll('.goal-input').forEach(inp => inp.addEventListener('input', recalc));
+
+// Clear
+document.getElementById('clear-btn').addEventListener('click', () => {
+  Object.keys(quantities).forEach(k => {
+    quantities[k] = 0;
+    const el = document.getElementById('qty-' + k);
+    if (el) el.textContent = 0;
+  });
+  recalc();
+});
+
+// ── RECALC ────────────────────────────────────────────────
+function recalc() {
+  let totCal = 0, totPro = 0, totCarb = 0, totFat = 0;
+  const logItems = [];
+
+  stations.forEach(station => {
+    station.items.forEach((item, ii) => {
+      const key = `${station.id}-${ii}`;
+      const qty = quantities[key] || 0;
+      if (qty > 0) {
+        totCal  += qty * item.cal;
+        totPro  += qty * item.pro;
+        totCarb += qty * item.carb;
+        totFat  += qty * item.fat;
+        logItems.push({ name: qty > 1 ? `${item.name} ×${qty}` : item.name, cal: qty * item.cal });
+      }
+    });
+  });
+
+  const gCal  = parseInt(document.getElementById('g-cal').value)  || 2200;
+  const gPro  = parseInt(document.getElementById('g-pro').value)  || 160;
+  const gCarb = parseInt(document.getElementById('g-carb').value) || 250;
+  const gFat  = parseInt(document.getElementById('g-fat').value)  || 70;
+
+  const pct = Math.min(totCal / gCal, 1);
+  document.getElementById('cal-ring').style.strokeDashoffset = 345 - pct * 345;
+  document.getElementById('t-cal').textContent = totCal;
+  document.getElementById('ring-sub').textContent = `${totCal} of ${gCal} kcal`;
+  document.getElementById('header-cal').textContent = `${totCal} kcal tracked`;
+
+  const barPct = (v, g) => Math.min((v / g) * 100, 100).toFixed(1) + '%';
+  document.getElementById('bar-pro').style.width  = barPct(totPro,  gPro);
+  document.getElementById('bar-carb').style.width = barPct(totCarb, gCarb);
+  document.getElementById('bar-fat').style.width  = barPct(totFat,  gFat);
+  document.getElementById('t-pro-label').textContent  = `${totPro}g / ${gPro}g`;
+  document.getElementById('t-carb-label').textContent = `${totCarb}g / ${gCarb}g`;
+  document.getElementById('t-fat-label').textContent  = `${totFat}g / ${gFat}g`;
+
+  const logList = document.getElementById('log-list');
+  logList.innerHTML = logItems.length === 0
+    ? '<p class="log-empty">Nothing added yet.</p>'
+    : logItems.map(i => `<div class="log-item"><span class="log-item-name">${i.name}</span><span class="log-item-cal">${i.cal} kcal</span></div>`).join('');
+}
+
+// ── KICK OFF ──────────────────────────────────────────────
+loadMenu();
+</script>
+</body>
+</html>
